@@ -2,6 +2,7 @@ package SensorRestApi.DTO;
 
 
 import jakarta.validation.constraints.NotEmpty;
+import org.hibernate.validator.constraints.UniqueElements;
 
 public class SensorDTO {
     @NotEmpty

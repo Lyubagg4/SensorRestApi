@@ -2,18 +2,18 @@ package SensorRestApi.DTO;
 
 import SensorRestApi.Models.Sensor;
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 
 public class MeasurementsDTO {
-    @Size(min = -100, max = 100)
+    @DecimalMin(value = "-100.0", inclusive = true)
+    @DecimalMax(value = "100.0", inclusive = true)
     private double value;
 
     private boolean raining;
 
-    @NotEmpty
-    private Sensor sensor;
+    @NotNull
+    private SensorDTO sensor;
 
     public double getValue() {
         return value;
@@ -21,10 +21,6 @@ public class MeasurementsDTO {
 
     public boolean isRaining() {
         return raining;
-    }
-
-    public Sensor getSensor() {
-        return sensor;
     }
 
     public void setValue(double value) {
@@ -35,7 +31,11 @@ public class MeasurementsDTO {
         this.raining = raining;
     }
 
-    public void setSensor(Sensor sensor) {
+    public SensorDTO getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(SensorDTO sensor) {
         this.sensor = sensor;
     }
 }

@@ -2,6 +2,7 @@ package SensorRestApi.Models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.List;
 

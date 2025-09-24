@@ -1,8 +1,9 @@
 package SensorRestApi.Models;
 
+import SensorRestApi.DTO.MeasurementsDTO;
+import SensorRestApi.DTO.SensorDTO;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
 
@@ -14,17 +15,19 @@ public class Measurements {
     @Column(name = "id")
     private int id;
 
-    @Size(min = -100, max = 100)
+    @DecimalMin(value = "-100.0", inclusive = true)
+    @DecimalMax(value = "100.0", inclusive = true)
     @Column(name = "value")
-    private double value;
+    private Double value;
 
     @Column(name = "raining")
     private boolean raining;
 
+
     @Column(name = "timeOfMeasurement")
     private LocalDateTime timeOfMeasurement;
 
-    @NotEmpty
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sensor", referencedColumnName = "id")
     private Sensor sensor;

@@ -4,6 +4,9 @@ package SensorRestApi.Controllers;
 import SensorRestApi.DTO.SensorDTO;
 import SensorRestApi.Services.MeasureService;
 import SensorRestApi.Services.SensorService;
+import SensorRestApi.Util.SensorAlreadyExistException;
+import SensorRestApi.Util.CastomResponses.SensorErrorResponse;
+import SensorRestApi.Util.SensorValidException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,15 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.http.ResponseEntity.badRequest;
-
-@Controller
+@RestController
 @RequestMapping("/sensors")
 public class SensorController {
     private final SensorService sensorService;
@@ -37,12 +36,32 @@ public class SensorController {
             StringBuilder sb = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
             for(FieldError error: errors){
-                sb.append(errors+" "+error.getDefaultMessage()).append(";");
+                sb.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("; ");
             }
-            return ResponseEntity.badRequest().body(sb.toString());// TODO
+            throw new SensorValidException(sb.toString());
 
         }
         sensorService.registrate(sensor);
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+
+
+    @ExceptionHandler()
+    public ResponseEntity<SensorErrorResponse> handleExceprion(SensorAlreadyExistException ex) {
+        SensorErrorResponse response = new SensorErrorResponse(
+                ex.getMessage(),
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler()
+    public ResponseEntity<SensorErrorResponse> handleExceprion(SensorValidException ex) {
+        SensorErrorResponse response = new SensorErrorResponse(
+                ex.getMessage(),
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 }
+

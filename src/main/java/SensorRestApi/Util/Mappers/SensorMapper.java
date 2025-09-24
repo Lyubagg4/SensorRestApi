@@ -1,4 +1,4 @@
-package SensorRestApi.Util;
+package SensorRestApi.Util.Mappers;
 
 import SensorRestApi.DTO.SensorDTO;
 import SensorRestApi.Models.Sensor;
