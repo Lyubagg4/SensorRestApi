@@ -59,4 +59,5 @@ public class MeasureService {
         measurementsDTO.setSensor(sensor);
         return measurementsDTO;
     }
+
 }
