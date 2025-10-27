@@ -14,6 +14,16 @@ public class MeasurementsDTO {
 
     @NotNull
     private SensorDTO sensor;
+    public MeasurementsDTO() {
+    }
+
+    public MeasurementsDTO(double value, boolean raining, SensorDTO sensor) {
+        this.value = value;
+        this.raining = raining;
+        this.sensor = sensor;
+    }
+
+
 
     public double getValue() {
         return value;

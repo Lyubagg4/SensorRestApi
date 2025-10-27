@@ -2,7 +2,6 @@ package SensorRestApi.Models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.List;
 
@@ -20,6 +19,13 @@ public class Sensor {
 
     @OneToMany(mappedBy = "sensor", fetch = FetchType.LAZY)
     private List<Measurements> measurements;
+
+    public Sensor() {
+    }
+
+    public Sensor(String name) {
+        this.name = name;
+    }
 
     public int getId() {
         return id;

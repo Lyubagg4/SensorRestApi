@@ -31,37 +31,9 @@ public class SensorController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<?> registration(@RequestBody @Valid SensorDTO sensor, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            StringBuilder sb = new StringBuilder();
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for(FieldError error: errors){
-                sb.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("; ");
-            }
-            throw new SensorValidException(sb.toString());
-
-        }
+    public ResponseEntity<?> registration(@RequestBody @Valid SensorDTO sensor){
         sensorService.registrate(sensor);
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
-
-
-
-    @ExceptionHandler()
-    public ResponseEntity<SensorErrorResponse> handleExceprion(SensorAlreadyExistException ex) {
-        SensorErrorResponse response = new SensorErrorResponse(
-                ex.getMessage(),
-                System.currentTimeMillis()
-        );
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-    @ExceptionHandler()
-    public ResponseEntity<SensorErrorResponse> handleExceprion(SensorValidException ex) {
-        SensorErrorResponse response = new SensorErrorResponse(
-                ex.getMessage(),
-                System.currentTimeMillis()
-        );
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.ok().build();
     }
 }
 

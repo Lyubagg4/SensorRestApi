@@ -8,6 +8,13 @@ public class SensorDTO {
     @NotEmpty
     private String name;
 
+    public SensorDTO() {
+    }
+
+    public SensorDTO(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

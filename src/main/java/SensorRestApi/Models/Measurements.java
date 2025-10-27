@@ -1,7 +1,6 @@
 package SensorRestApi.Models;
 
-import SensorRestApi.DTO.MeasurementsDTO;
-import SensorRestApi.DTO.SensorDTO;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -31,6 +30,7 @@ public class Measurements {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sensor", referencedColumnName = "id")
     private Sensor sensor;
+
 
     public int getId() {
         return id;
