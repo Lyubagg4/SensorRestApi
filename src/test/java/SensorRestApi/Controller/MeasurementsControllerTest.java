@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -107,7 +108,7 @@ public class MeasurementsControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> {
                     Assertions.assertNotNull(result.getResolvedException());
-                    Assertions.assertTrue(result.getResolvedException() instanceof MeasureValidException);
+                    Assertions.assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException);
                 });
     }
 

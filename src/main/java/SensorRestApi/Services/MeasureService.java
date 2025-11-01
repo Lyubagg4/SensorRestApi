@@ -8,6 +8,8 @@ import SensorRestApi.Repositories.MeasureRepository;
 import SensorRestApi.Repositories.SensorRepository;
 import SensorRestApi.Util.Mappers.MeasureMapper;
 import SensorRestApi.Util.SensorNotExistException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ public class MeasureService {
     private final MeasureMapper measureMapper;
     private final SensorRepository sensorRepository;
     private final MeasureRepository measureRepository;
+    private Logger logger = LoggerFactory.getLogger(MeasureService.class);
 
     @Autowired
     public MeasureService(MeasureMapper measureMapper, SensorRepository sensorRepository, MeasureRepository measureRepository) {
@@ -28,13 +31,16 @@ public class MeasureService {
     }
 
     public void addMeasure(MeasurementsDTO measurementsDTO){
+        logger.info("Adding measurement for sensor "+measurementsDTO.getSensor().getName());
         if(!sensorRepository.existsByName(measurementsDTO.getSensor().getName())){
+            logger.error("Sensor with this name "+measurementsDTO.getSensor().getName() + "already exist");
             throw new SensorNotExistException("Сенсор с таким именем не зарегистрирован!");
         }
         Sensor toEntity = sensorRepository.findByName(measurementsDTO.getSensor().getName());
         measureRepository.save(convertToEntity(measurementsDTO, toEntity));
     }
     public List<MeasurementsDTO> findAllMeasure(){
+        logger.info("Finding all measurements");
         return measureRepository.findAll().stream().map(this::convertToDto).toList();
     }
     public Measurements convertToEntity(MeasurementsDTO measurementsDTO, Sensor sensor){
@@ -44,6 +50,7 @@ public class MeasureService {
         return measurements;
     }
     public int findAllMeasureWhereRainyDay(){
+        logger.info("Finding all measurements with rainy days");
         int count = 0;
         for(MeasurementsDTO mdto: measureRepository.findAll().stream().map(this::convertToDto).toList()){
             if(mdto.isRaining()){

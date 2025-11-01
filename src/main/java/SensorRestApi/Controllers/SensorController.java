@@ -8,6 +8,8 @@ import SensorRestApi.Util.SensorAlreadyExistException;
 import SensorRestApi.Util.CastomResponses.SensorErrorResponse;
 import SensorRestApi.Util.SensorValidException;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import java.util.List;
 public class SensorController {
     private final SensorService sensorService;
     private final MeasureService measureService;
+    private Logger logger = LoggerFactory.getLogger(SensorController.class);
 
     @Autowired
     public SensorController(SensorService sensorService, MeasureService measureService) {
@@ -31,8 +34,9 @@ public class SensorController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<?> registration(@RequestBody @Valid SensorDTO sensor){
-        sensorService.registrate(sensor);
+    public ResponseEntity<?> registration(@RequestBody @Valid SensorDTO sensorDTO){
+        logger.info("Sensor registration post-request" + sensorDTO.getName());
+        sensorService.registrate(sensorDTO);
         return ResponseEntity.ok().build();
     }
 }
